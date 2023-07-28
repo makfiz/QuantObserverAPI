@@ -1,5 +1,4 @@
 const express = require('express');
-const { TOKEN } = require('./config');
 const router = express.Router();
 const controllers = require('../../controllers/token.controller');
 
