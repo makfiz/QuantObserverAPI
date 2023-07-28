@@ -6,7 +6,7 @@ const tokenRouter = require('./routes/API/token');
 
 const app = express();
 
-app.use(logger('development'));
+app.use(logger('dev'));
 app.use(cors());
 app.use(express.json());
 
