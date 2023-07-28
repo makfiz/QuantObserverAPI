@@ -9,6 +9,7 @@ function tryCatchWrapper(Fn) {
     try {
       await Fn(req, res, next);
     } catch (error) {
+      console.log(error);
       return next(error);
     }
   };

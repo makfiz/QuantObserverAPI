@@ -1,4 +1,4 @@
-const { WILLEXPIRE } = require('../config');
+const { WILLEXPIRE, TOKEN } = require('../config');
 
 async function getToken(req, res, next) {
   if (Date.now() > Date.parse(WILLEXPIRE)) {
