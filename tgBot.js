@@ -13,26 +13,36 @@ const userWizard = new Scenes.WizardScene(
       ctx.reply('Nodes offline');
       return ctx.scene.leave();
     } else {
-      ctx.replyWithHTML('Nodes menu:', getNodesMenu(keys))
-        .then((message) => {
-          ctx.session.menuMessageId = message.message_id;
-        });
+      ctx.replyWithHTML('Nodes menu:', getNodesMenu(keys)).then(message => {
+        ctx.session.menuMessageId = message.message_id;
+      });
+      return ctx.wizard.next();
     }
-    return ctx.wizard.next();
   },
   ctx => {
     const chosenNode = ctx.callbackQuery.data;
     ctx.session.node = chosenNode;
-    ctx.telegram.editMessageText(ctx.chat.id, ctx.session.menuMessageId, null, 'Actions:', {
-      ...currentNodeMenu(),
-      parse_mode: 'HTML'
-    });
+    ctx.telegram.editMessageText(
+      ctx.chat.id,
+      ctx.session.menuMessageId,
+      null,
+      'Actions:',
+      {
+        ...currentNodeMenu(),
+        parse_mode: 'HTML',
+      }
+    );
     return ctx.wizard.next();
   },
   ctx => {
     const chosenAction = ctx.callbackQuery.data;
-    ctx.telegram.editMessageText(ctx.chat.id, ctx.session.menuMessageId, null, `You selected action: ${chosenAction} on node ${ctx.session.node}`);
-    actions.sendSnapshotAction(ctx.session.node)
+    ctx.telegram.editMessageText(
+      ctx.chat.id,
+      ctx.session.menuMessageId,
+      null,
+      `You selected action: ${chosenAction} on node ${ctx.session.node}`
+    );
+    actions.sendSnapshotAction(ctx.session.node);
     return ctx.scene.leave();
   }
 );
@@ -50,7 +60,10 @@ function getNodesMenu(nodes) {
 
 function currentNodeMenu() {
   return Markup.inlineKeyboard(
-    [Markup.button.callback('Snapshot', 'snapshot'), Markup.button.callback('Reload', 'reload')],
+    [
+      Markup.button.callback('Snapshot', 'snapshot'),
+      Markup.button.callback('Reload', 'reload'),
+    ],
     { columns: 2 }
   );
 }
