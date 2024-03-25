@@ -11,6 +11,7 @@ const userWizard = new Scenes.WizardScene(
     const keys = Object.keys(WSClients);
     if (keys.length == 0) {
       ctx.reply('Nodes offline');
+      return ctx.scene.leave();
     } else {
       ctx.replyWithHTML('Nodes menu:', getNodesMenu(keys))
         .then((message) => {
