@@ -1,8 +1,6 @@
-const dotenv = require('dotenv');
-dotenv.config();
-const { TOKEN, PORT, WILLEXPIRE } = process.env;
+const TGTOKEN = "6399037507:AAHqyZEvsuO75R6zOvGWcxy2l8cpAfbNgS8"
+let WSClients = {};
 module.exports = {
-  TOKEN,
-  PORT,
-  WILLEXPIRE,
+  TGTOKEN,
+  WSClients
 };
