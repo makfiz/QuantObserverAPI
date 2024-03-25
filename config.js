@@ -1,4 +1,6 @@
-const TGTOKEN = "6399037507:AAHqyZEvsuO75R6zOvGWcxy2l8cpAfbNgS8"
+const dotenv = require('dotenv');
+dotenv.config();
+const { TGTOKEN } = process.env;
 let WSClients = {};
 module.exports = {
   TGTOKEN,
