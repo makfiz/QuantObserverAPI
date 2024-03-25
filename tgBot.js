@@ -5,10 +5,13 @@ const actions = require('./actions');
 
 const bot = new Telegraf(TGTOKEN);
 
+let keys = []
+const nodeActions = ["snapshot","reload"]
+
 const userWizard = new Scenes.WizardScene(
   'user-wizard',
   ctx => {
-    const keys = Object.keys(WSClients);
+     keys = Object.keys(WSClients);
     if (keys.length == 0) {
       ctx.reply('Nodes offline');
       return ctx.scene.leave();
@@ -20,9 +23,11 @@ const userWizard = new Scenes.WizardScene(
     }
   },
   ctx => {
-    const chosenNode = ctx.callbackQuery.data;
-    ctx.session.node = chosenNode;
-    ctx.telegram.editMessageText(
+    const chosenNode = ctx.callbackQuery?.data;
+
+    if (typeof chosenNode === 'string' && keys.includes(chosenNode)) {
+      ctx.session.node = chosenNode;
+      ctx.telegram.editMessageText(
       ctx.chat.id,
       ctx.session.menuMessageId,
       null,
@@ -33,19 +38,30 @@ const userWizard = new Scenes.WizardScene(
       }
     );
     return ctx.wizard.next();
+    } else return ctx.scene.reenter()
+  
+    
   },
   ctx => {
-    const chosenAction = ctx.callbackQuery.data;
-    ctx.telegram.editMessageText(
-      ctx.chat.id,
-      ctx.session.menuMessageId,
-      null,
-      `You selected action: ${chosenAction} on node ${ctx.session.node}`
-    );
-    actions.sendSnapshotAction(ctx.session.node);
-    return ctx.scene.leave();
+    const chosenAction = ctx.callbackQuery?.data;
+    if (typeof chosenAction === 'string' && nodeActions.includes(chosenAction)) {
+      ctx.telegram.editMessageText(
+        ctx.chat.id,
+        ctx.session.menuMessageId,
+        null,
+        `You selected action: ${chosenAction} on node ${ctx.session.node}`
+      );
+      actions.sendSnapshotAction(ctx.session.node);
+      return ctx.scene.leave();
+    } else  ctx.scene.reenter()
+    
   }
 );
+
+userWizard.on('error', (ctx, error) => {
+  console.error('Ошибка в сцене user-wizard:', error);
+  ctx.reply('Произошла ошибка во время выполнения сцены. Попробуйте снова.');
+});
 
 const stage = new Scenes.Stage([userWizard]);
 

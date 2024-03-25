@@ -6,7 +6,6 @@ function sendSnapshotAction (nodeName) {
   if (keys.includes(nodeName)) {
     console.log(`Client with nodeName ${nodeName} found`);
     const wsObject = WSClients[nodeName];
-    console.log(wsObject);
     wsObject.send('Action:Snapshot')
   }
 }
