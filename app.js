@@ -29,6 +29,10 @@ wss.on('connection', function connection(ws) {
        wsName = parts[1].trim();
       WSClients[wsName] = ws
     }
+
+    if (msg == "ping") {
+      ws.send('Pong');
+    }
  
     
   });
