@@ -30,7 +30,7 @@ wss.on('connection', function connection(ws) {
       WSClients[wsName] = ws
     }
 
-    if (msg == "ping") {
+    if (msg == "Ping") {
       ws.send('Pong');
     }
  
