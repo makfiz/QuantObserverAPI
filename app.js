@@ -23,7 +23,7 @@ wss.on('connection', function connection(ws) {
   let wsName
   ws.on('message', function incoming(message) {
     const msg = message.toString()
-    console.log('received from client:', msg);
+    console.log('received from:', msg);
     if (msg.includes('wsName:')) {
       const parts = msg.split(':');
        wsName = parts[1].trim();
@@ -31,6 +31,8 @@ wss.on('connection', function connection(ws) {
     }
 
     if (msg == "Ping") {
+      const keys = Object.keys(WSClients);
+      console.log(keys)
       ws.send('Pong');
     }
  

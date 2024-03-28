@@ -5,13 +5,16 @@ const actions = require('./actions');
 
 const bot = new Telegraf(TGTOKEN);
 
-let keys = []
+
+function getKeys() {
+  return Object.keys(WSClients);
+}
 const nodeActions = ["snapshot","reload"]
 
 const userWizard = new Scenes.WizardScene(
   'user-wizard',
   ctx => {
-     keys = Object.keys(WSClients);
+     const keys = getKeys()
     if (keys.length == 0) {
       ctx.reply('Nodes offline');
       return ctx.scene.leave();
@@ -23,6 +26,7 @@ const userWizard = new Scenes.WizardScene(
     }
   },
   ctx => {
+    const keys = getKeys()
     const chosenNode = ctx.callbackQuery?.data;
 
     if (typeof chosenNode === 'string' && keys.includes(chosenNode)) {
