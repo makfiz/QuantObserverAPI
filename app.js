@@ -32,7 +32,7 @@ wss.on('connection', function connection(ws) {
 
     if (msg == "Ping") {
       const keys = Object.keys(WSClients);
-      console.log(keys)
+      console.log("keys",keys)
       ws.send('Pong');
     }
  
