@@ -55,7 +55,13 @@ const userWizard = new Scenes.WizardScene(
         null,
         `You selected action: ${chosenAction} on node ${ctx.session.node}`
       );
-      actions.sendSnapshotAction(ctx.session.node);
+      if (chosenAction == 'snapshot') {
+        actions.sendSnapshotAction(ctx.session.node);
+      }
+      if (chosenAction == 'reload') {
+        actions.sendReloadAction(ctx.session.node);
+      }
+      
       return ctx.scene.leave();
     } else  ctx.scene.reenter()
     
@@ -72,6 +78,10 @@ const stage = new Scenes.Stage([userWizard]);
 bot.use(session());
 bot.use(stage.middleware());
 bot.command('menu', Scenes.Stage.enter('user-wizard'));
+bot.command('update', async ctx => {
+  await ctx.reply('node update started');
+  actions.sendUpdateAction()
+});
 
 function getNodesMenu(nodes) {
   const buttons = nodes.map(node => Markup.button.callback(node, node));
