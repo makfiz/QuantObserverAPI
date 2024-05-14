@@ -78,7 +78,7 @@ const stage = new Scenes.Stage([userWizard]);
 bot.use(session());
 bot.use(stage.middleware());
 bot.command('menu', Scenes.Stage.enter('user-wizard'));
-bot.command('update', async ctx => {
+bot.hears('update', async ctx => {
   await ctx.reply('node update started');
   actions.sendUpdateAction()
 });
