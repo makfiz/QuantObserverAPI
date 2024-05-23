@@ -63,26 +63,6 @@ server.listen(8080, () => {
   console.log(`Server running. Use our API on PORT: 8080`);
 });
 
-// Global error handlers
-process.on('uncaughtException', err => {
-  console.error('Uncaught Exception:', err);
-  // Optionally, exit the process
-  // process.exit(1);
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  // Optionally, exit the process
-  // process.exit(1);
-});
-
-process.on('SIGTERM', () => {
-  console.log('Received SIGTERM, shutting down gracefully...');
-  server.close(() => {
-    console.log('Server closed');
-    process.exit(0);
-  });
-});
 module.exports = {
   WSClients,
 };
