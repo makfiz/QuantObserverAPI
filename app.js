@@ -13,36 +13,33 @@ tgbot.catch((err, ctx) => {
   console.log('ctx', ctx);
 });
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server ,path: '/ws'});
-
+const wss = new WebSocket.Server({ server, path: '/ws' });
 
 app.use(cors());
 app.use(express.json());
 
 wss.on('connection', function connection(ws) {
-  let wsName
+  let wsName;
   ws.on('message', function incoming(message) {
-    const msg = message.toString()
+    const msg = message.toString();
     console.log('received from:', msg);
     if (msg.includes('wsName:')) {
       const parts = msg.split(':');
-       wsName = parts[1].trim();
-      WSClients[wsName] = ws
+      wsName = parts[1].trim();
+      WSClients[wsName] = ws;
     }
 
-    if (msg == "Ping") {
+    if (msg == 'Ping') {
       const keys = Object.keys(WSClients);
-      console.log("keys",keys)
+      console.log('keys', keys);
       ws.send('Pong');
     }
- 
-    
   });
   ws.send('Hello from WebSocket server!');
-  ws.on('close', function() {
-    console.log(`WebSocket connection with ${wsName} closed`);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+  ws.on('close', function () {
+    console.log(`WebSocket connection with ${wsName} closed`);
 
-    delete WSClients[wsName]
+    delete WSClients[wsName];
   });
 });
 
@@ -66,7 +63,12 @@ server.listen(8080, () => {
   console.log(`Server running. Use our API on PORT: 8080`);
 });
 
+process.on('uncaughtException', err => {
+  console.error('Uncaught Exception:', err);
+  // Optionally, exit the process
+  // process.exit(1);
+});
 
 module.exports = {
-  WSClients
+  WSClients,
 };
